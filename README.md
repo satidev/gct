@@ -171,7 +171,7 @@ edit source files and build GCT.
 ```console
 mkdir gct_vs
 cd gct_vs
-git clone --recursive https://gitlab.stimulate.ovgu.de/shiras-abdurahman/gct.git
+git clone --recursive https://github.com/satidev/gct.git
 ```
 2. Launch VS Code.
 3. Click File -> Open Folder and select the gct directory where the main CMakeLists.txt exists.
