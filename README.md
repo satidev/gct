@@ -147,7 +147,7 @@ sudo apt-get install git-all
 
 ### 6. Download source files and build GCT libraries and programs
 ```console
-git clone --recursive https://gitlab.stimulate.ovgu.de/shiras-abdurahman/gct.git
+git clone --recursive https://github.com/satidev/gct.git
 cd gct
 mkdir build
 cd build
