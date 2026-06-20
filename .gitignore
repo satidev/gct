@@ -1,0 +1,16 @@
+# Ignore clion generated files ing the ./idea folder#
+###################
+*.iml
+*.dll
+*.pyc
+
+
+.idea
+vscode
+.vs
+build
+cmake-build-debug/
+cmake-build-release
+cmake-build-release-coverage
+cmake-build-debug-coverage
+thirdparty/eigen
