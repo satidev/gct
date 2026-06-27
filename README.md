@@ -188,7 +188,7 @@ git clone --recursive https://github.com/satidev/gct.git
 
 To run the example reconstructions listed example_recon.h file, 
 please download the test data from the following link:
-https://data.stimulate.ovgu.de/f/43c71c8a810840df8aef/?dl=1
+https://drive.google.com/file/d/10HiyYO8T32fDTYqEoh9RPe_I1__YbzYH/view?usp=drive_link
 
 The projection data was generated using the CT simulation toolkit
 [CTL](https://gitlab.com/tpfeiffe/ctl).
