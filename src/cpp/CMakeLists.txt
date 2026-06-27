@@ -11,7 +11,7 @@ if (DCMTK_FOUND)
     set(SRC_FILES_DCMTK_DEPENDENT
             io/file_reader/dcm_file_reader.h
             io/file_reader/dcm_file_reader.cpp)
-elseif ()
+else()
     set(SRC_FILES_DCMTK_DEPENDENT)
 endif ()
 
