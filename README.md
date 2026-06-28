@@ -165,7 +165,8 @@ Add the above line, then save and close the file.
 sudo apt-get install git-all
 ```
 
-#### 7. Downloading Source Files and Building the Program
+#### 7 Building GCT Program
+##### 7.a Downloading Source Files and Building the Program Individually
 
 ```console
 git clone --recursive https://github.com/satidev/gct.git
@@ -176,9 +177,10 @@ cmake ..
 make
 ```
 
+##### 7.b Using an IDE
 Alternatively (and ideally), a popular IDE such as [Visual Studio Code](https://code.visualstudio.com/) can be used to edit source files and build the program.
 
-#### Installing VS Code and Required/Optional Extensions
+###### Installing VS Code and Required/Optional Extensions
 
 1. Install [Visual Studio Code](https://code.visualstudio.com/) via Ubuntu Software or directly from the website.
 2. Launch VS Code.
@@ -186,7 +188,7 @@ Alternatively (and ideally), a popular IDE such as [Visual Studio Code](https://
 4. Install the **CMake Tools** extension from Microsoft.
 5. Optional: install the **Nsight Visual Studio Code Edition** extension from NVIDIA.
 
-#### Compilation and Program Build in Visual Studio Code
+###### Compilation and Program Build in Visual Studio Code
 
 1. Clone the git repository recursively to a local directory:
 
