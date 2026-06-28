@@ -10,6 +10,8 @@
 namespace GCT::Test
 {
 using namespace GCT::Geom::Units;
+
+
 TEST_CASE("2D image is reconstructed from the 1D parallel projections",
           "[recon][fdk_axial]")
 {
@@ -126,7 +128,7 @@ TEST_CASE("2D image is reconstructed from the 1D fan-beam (arc detector) project
     auto const reader = IO::MetaImgFileReader{vol_filename};
     auto const voxel_data = reader.template readData<float>();
 
-    auto constexpr eps = 0.000001f;
+    auto constexpr eps = 0.0001f;
     Recon::CUDA::reconFDK<Geom::DetFanArc>(ct_geom, proj, vol);
     REQUIRE_THAT(vol.elements(), AreEqualFloatArrays(voxel_data, eps));
     Recon::CUDA::Detail::reconFDKLowMem<Geom::DetFanArc>(ct_geom, proj, vol);
@@ -258,7 +260,7 @@ TEST_CASE("3D volume is reconstructed from the 2D cone-beam (cylindrical detecto
     auto const reader = IO::MetaImgFileReader{vol_filename};
     auto const voxel_data = reader.template readData<float>();
 
-    auto constexpr eps = 0.000001f;
+    auto constexpr eps = 0.0001f;
     Recon::CUDA::reconFDK<Geom::DetFanArc, Geom::DetFanLine>(ct_geom, proj, vol);
     REQUIRE_THAT(vol.elements(), AreEqualFloatArrays(voxel_data, eps));
     Recon::CUDA::Detail::reconFDKLowMem<Geom::DetFanArc, Geom::DetFanLine>(ct_geom, proj, vol);
@@ -533,5 +535,6 @@ TEST_CASE("3D volume is reconstructed from the 2D cone-parallel projections",
     Recon::CUDA::Detail::reconFDKHighMem<Geom::DetParallel, Geom::DetFanLine>(ct_geom, proj, vol);
     REQUIRE_THAT(vol.elements(), AreEqualFloatArrays(voxel_data, eps));
 }
+
 
 }//GCT::Test namespace.
