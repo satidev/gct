@@ -37,7 +37,7 @@ Images courtesy of Australian Nuclear Science and Technology Organisation. <br/>
 
 
 
-# Documentation
+## Documentation
 The paper describing the design of GCT has been published in the conference proceedings
 of the 17th International Meeting on Fully Three-Dimensional
 Image Reconstruction in Radiology and Nuclear Medicine.
@@ -45,146 +45,166 @@ The title of the paper is 'A generic software design for computed tomography in 
 can be accessed from the link: https://arxiv.org/abs/2310.16846
 
 
-# Installation and software build
-The current version of GCT requires a C++ compiler that supports C++ 20 features, such as concepts,
-and an NVIDIA CUDA compiler and toolkit that supports CUDA 12.0. Please check the official CUDA 
-installation
-instructions for your operating system. It is to be noted that only NVIDIA GPUs of Maxwell, Pascal,
-Volta, Turing, Ampere, Ada Lovelace, and Hopper architectures support CUDA 12.0.
-Unfortunately, GCT cannot be run on GPUs of Tesla, Fermi, and Kepler architectures.
+## Installation and software build
+The current version of GCT requires a C++ compiler that supports C++ 23 features and an NVIDIA CUDA compiler and toolkit that supports CUDA 13.3. Please check the official CUDA installation instructions for your operating system. Note that only NVIDIA GPUs of Turing, Ampere, Ada Lovelace, Hopper, and Blackwell architectures support CUDA 13.3. Unfortunately, GCT cannot be run on GPUs of Tesla, Fermi, Kepler, Maxwell, Pascal and Volta architectures.
 
-Currently, GCT has been installed and tested only in Ubuntu 22.04 LTS. We will add installation 
-instructions for the Windows operating system after testing.
+Currently, GCT has been installed and tested only in Ubuntu 26.04 LTS. We will add installation instructions for the Windows operating system after testing.
 
-## Ubuntu 22.04 LTS
-Here are the installation instructions we followed for the laptop with RTX 3070 GPU (Ampere
-architecture) running Ubuntu 22.04 LTS. The following instructions are based on the assumption
-that you have access to a computer with freshly installed Ubuntu 22.04 LTS.
-Before executing the commands in the terminal right away,
-read all installation instructions to determine the packages that you
-need to install (some packages may have already been installed), and the best option for
-installation and program compilation if there are alternatives available.
+### Ubuntu 26.04 LTS
 
+Here are the installation instructions we followed for a laptop with an RTX 3070 GPU (Ampere architecture) running [Ubuntu 26.04 LTS](https://ubuntu.com/download/desktop). The following instructions assume that you have access to a computer with a freshly installed Ubuntu 26.04 LTS. Before executing the commands in the terminal, read all installation instructions to determine which packages you need to install (some may already be installed) and the best option for installation and program compilation where alternatives are available.
 
+#### 1. Installing the g++ Compiler and Other Build Tools
 
-### 1. Installing g++ compiler and other tools for building C++ programs
-
-Verify whether the g++ compiler has already been installed:
+Verify whether the g++ compiler is already installed:
 
 ```console
 g++ --version
 ```
 
-As per the CUDA documentation, at least gcc/g++ 10 is required for CUDA 12.0.
-We would recommend installing g++ 11 for new C++ features. In Ubuntu 22.04 LTS,
-the following commands will install g++ 11.3 and other packages for building C/C++ programs
-such as make:
+In Ubuntu 26.04 LTS, the following commands will install g++ 15.2 and other packages for building C/C++ programs, such as `make`:
 
 ```console
 sudo apt update
 sudo apt install build-essential
 ```
-It is to be noted that in Ubuntu 18.04 LTS and 20.04 LTS, the above commands will install
-gcc/g++ 7.5.0 and 9.3.0, respectively.
-Hence, you have to install g++ 11 separately:
 
-```console
-sudo apt update
-sudo apt install gcc-11 g++-11
-```
-
-### 2. Installing cmake (3.26.3)
+#### 2. Installing CMake (4.2.3)
 
 ```console
 sudo apt-get install cmake
 ```
 
-### 3. Installing NVIDIA driver version 530
-Since GCT is a CUDA-based application, NVIDIA driver compatible with CUDA toolkit 12.0 is
-necessary.
-The minimum driver version required for CUDA 12.0 and CUDA 12.1 is 525.60.13.
-You can install it via the Software and Updates app (Additional Drivers tab) of the Ubuntu operating system
-or with the following command:
+#### 3. Installing the NVIDIA Driver
+
+The minimum driver version required for CUDA 13.x is R580. You can install the driver with the following commands:
 
 ```console
-sudo apt install nvidia-driver-530
+ubuntu-drivers devices
+# Make sure that the recommended driver version is greater than 580.0
+sudo ubuntu-drivers install
 ```
-Please reboot after installing the driver.
 
-### 4. Installing CUDA Toolkit 12.1 Update 1
-Follow the installation instructions listed in
-[CUDA website](https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=22.04&target_type=deb_network).
+Please reboot after installing the driver. For more information, see the [NVIDIA driver installation guide](https://docs.nvidia.com/datacenter/tesla/driver-installation-guide/).
 
+#### 4. Installing gedit for Text Editing
+
+```console
+sudo apt update
+sudo apt install gedit
+```
+
+#### 5. Installing CUDA Toolkit 13.3
+
+Follow the installation instructions on the
+[CUDA Downloads page](https://developer.nvidia.com/cuda-downloads?target_os=Linux&target_arch=x86_64&Distribution=Ubuntu&target_version=26.04&target_type=deb_network).
 
 After installation, verify with the following command:
+
 ```console
 nvcc --version
 ```
-If the nvcc version is not displayed, the following environment variables are needed to
-set by editing the .bashrc file located in $HOME directory.<br />
-export PATH="/usr/local/cuda-12.1/bin:$PATH"<br />
-export LD_LIBRARY_PATH="/usr/local/cuda-12.1/lib64:$LD_LIBRARY_PATH"<br />
+
+If the `nvcc` version is not displayed, the following environment variables need to be set by editing the `.bashrc` file located in the `$HOME` directory:
+
+```
+export CUDA_HOME=/usr/local/cuda-13.3
+export PATH=$CUDA_HOME/bin:$PATH
+export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
+```
 
 ```console
 cd $HOME
 gedit .bashrc
 ```
-Add the above two lines to set the environment variables and close the file.
-To apply the change in the current session:
+
+Add the above three lines to set the environment variables and close the file. To apply the changes in the current session:
+
 ```console
 source ~/.bashrc
 ```
-And try again to check the nvcc version:
+
+Then verify the `nvcc` version again:
+
 ```console
 nvcc --version
 ```
 
-### 5. Installing git
+You should see output similar to the following:
+
+```console
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2026 NVIDIA Corporation
+Built on Fri_Apr_24_07:22:02_PM_PDT_2026
+Cuda compilation tools, release 13.3, V13.3.33
+Build cuda_13.3.r13.3/compiler.37862127_0
+```
+
+After the above successful configuration, make sure the following commands print the full path to the `nvcc` executable:
+
+```console
+which nvcc
+echo $CUDACXX
+```
+
+If not, set the `CUDACXX` environment variable by adding the following line to `/etc/environment`:
+
+```
+CUDACXX=/usr/local/cuda-13.3/bin/nvcc
+```
+
+```console
+sudo gedit /etc/environment
+```
+
+Add the above line, then save and close the file.
+
+#### 6. Installing Git
 
 ```console
 sudo apt-get install git-all
 ```
 
-### 6. Download source files and build GCT libraries and programs
+#### 7. Downloading Source Files and Building the Program
+
 ```console
 git clone --recursive https://github.com/satidev/gct.git
 cd gct
 mkdir build
 cd build
 cmake ..
-make 
+make
 ```
-Alternatively (also ideally!), popular IDEs like
-[Visual Studio Code](https://code.visualstudio.com/) can be used to  
-edit source files and build GCT. 
 
-#### Installation of VS Code and necessary and optional extensions
-1. Install Visual Studio Code (via Ubuntu Software or from the link https://code.visualstudio.com/).
+Alternatively (and ideally), a popular IDE such as [Visual Studio Code](https://code.visualstudio.com/) can be used to edit source files and build the program.
+
+#### Installing VS Code and Required/Optional Extensions
+
+1. Install [Visual Studio Code](https://code.visualstudio.com/) via Ubuntu Software or directly from the website.
 2. Launch VS Code.
-3. Install C/C++ extension from Microsoft (click Extensions and search for C/C++).
-4. Install CMake Tools extension from Microsoft.
-5. Optional: install C/C++ Extension Pack from Microsoft.
-6. Optional: install Nsight Visual Studio Code Edition from NVIDIA.
+3. Install the **C/C++** extension from Microsoft (click **Extensions** and search for `C/C++`).
+4. Install the **CMake Tools** extension from Microsoft.
+5. Optional: install the **Nsight Visual Studio Code Edition** extension from NVIDIA.
 
-#### Compilation and build of GCT in visual studio code
-1. Clone GCT repository recursively to a local directory.
+#### Compilation and Program Build in Visual Studio Code
+
+1. Clone the git repository recursively to a local directory:
+
 ```console
 mkdir gct_vs
 cd gct_vs
-git clone --recursive https://github.com/satidev/gct.git
+git clone --recursive https://github.com/satidev/cuda-cpp-tutorial.git
 ```
+
 2. Launch VS Code.
-3. Click File -> Open Folder and select the gct directory where the main CMakeLists.txt exists.
-   (gct_vs/gct)
-4. Select host compiler (e.g., GCC 11.3 ) for GCT (Select a Kit for GCT).
-5. Make sure that the configuration is successful and build files have been written to build 
-   directory.
-6. Build the library and program: click Terminal -> Run Build Task -> CMake: build.
+3. Click **File → Open Folder** and select the directory containing the main `CMakeLists.txt` (`gct_vs`).
+4. Select the host compiler (e.g., GCC 15.2).
+5. Confirm that the configuration is successful and that build files have been written to the `build` directory.
+6. Build the library and program: click **Terminal → Run Build Task → CMake: build**.
 
 
 
-
-# Test data and example reconstructions
+### Test data and example reconstructions
 
 To run the example reconstructions listed example_recon.h file, 
 please download the test data from the following link:
